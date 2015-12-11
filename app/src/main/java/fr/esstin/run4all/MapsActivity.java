@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,6 +23,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import static android.location.Location.distanceBetween;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -46,7 +47,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Button pause = null;
     Button stop = null;
     GoogleMap mMap;
-    LatLng position_initiale = new LatLng(0, 0);
     DataBaseHandler bdd;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -63,7 +63,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         stop = (Button) findViewById(R.id.stop);
         chrono.start();
 
-        //Durée du rafraichissement (ms)/distance de rafr (m)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -72,12 +71,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            Log.d("Debogage","Entré dans permission");
             return;
         }
 
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -117,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         enregistrement_coordonnees[1] = longitude;
                         first_passage = false;
                     } else {
-                        location.distanceBetween(enregistrement_coordonnees[0], enregistrement_coordonnees[1], latitude, longitude, result);
+                        distanceBetween(enregistrement_coordonnees[0], enregistrement_coordonnees[1], latitude, longitude, result);
                         enregistrement_coordonnees[0] = latitude;
                         enregistrement_coordonnees[1] = longitude;
                         distance += (double) result[0];

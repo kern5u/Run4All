@@ -18,14 +18,6 @@ public class MainActivity extends Activity {
         but_start = (ImageButton)findViewById(R.id.button_start);
         but_perf = (ImageButton)findViewById(R.id.button_perf);
 
-        /*but_start.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                // Réagir à un long clic
-                return false;
-            }
-        });*/
-
         but_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
