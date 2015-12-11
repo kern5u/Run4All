@@ -38,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     long basePause = 0;
     long temps = 0;
-    long ts_debutRun = System.currentTimeMillis() / 1000;
+    long ts_debutRun = 0;
 
     boolean first_passage = true;
     boolean bool_pause = false;
@@ -55,10 +55,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        ts_debutRun = System.currentTimeMillis()/1000;
 
         bdd = new DataBaseHandler(this);
 
-        chrono = (Chronometer) findViewById(R.id.chronometer2);
+        chrono = (Chronometer) findViewById(R.id.chronometer);
         pause = (Button) findViewById(R.id.pause);
         stop = (Button) findViewById(R.id.stop);
         chrono.start();
@@ -71,7 +72,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            Log.d("Debogage","Entré dans permission");
             return;
         }
 
@@ -160,8 +160,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onClick(View v) {
-                temps = chrono.getBase();
+                temps = (SystemClock.elapsedRealtime() - chrono.getBase())/100;
+                Log.d("Debogage", "Temps chrono fin = " + temps);
                 bdd.insertRunData(ts_debutRun, temps, distance);
+                onPause();
                 Intent intent = new Intent(MapsActivity.this, PerfActivity.class);
                 startActivity(intent);
             }
@@ -215,6 +217,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onPause(){
         super.onPause();
         Log.i("onPause", "inside onPause");
+        chrono.stop();
         //Durée du rafraichissement (ms)/distance de rafr (m)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -227,6 +230,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.removeUpdates(locationListener);
-        locationManager = null;
     }
 }

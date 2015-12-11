@@ -31,15 +31,15 @@ public class PerfActivity extends Activity {
         distance = bdd.getAllDistance();
 
         for(int i=0; i<timestamp.size();i++){
-            Log.d("timestamp","Timestamp["+i+"] = "+timestamp.get(i));
+            Log.d("Debogage","Timestamp["+i+"] = "+timestamp.get(i));
         }
 
         for(int i=0; i<temps.size();i++){
-            Log.d("timestamp","Timestamp["+i+"] = "+temps.get(i));
+            Log.d("Debogage","Temps["+i+"] = "+temps.get(i));
         }
 
         for(int i=0; i<distance.size();i++){
-            Log.d("timestamp","Timestamp["+i+"] = "+distance.get(i));
+            Log.d("Debogage","Distance["+i+"] = "+distance.get(i));
         }
 
         LineChart chart = (LineChart) findViewById(R.id.chart);
