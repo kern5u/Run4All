@@ -26,10 +26,14 @@ public class PerfActivity extends Activity {
 
         setContentView(R.layout.activity_perf);
 
+        //Méthode pour supprimer les entrées
+        //bdd.deleteAllTable();
+
         timestamp = bdd.getAllTimestamp();
         temps = bdd.getAllTemps();
         distance = bdd.getAllDistance();
 
+        //===========AFFICHAGE DES DONNEES DE LA BASE=================
         for(int i=0; i<timestamp.size();i++){
             Log.d("Debogage","Timestamp["+i+"] = "+timestamp.get(i));
         }

@@ -53,7 +53,7 @@ public class DataBaseHandler extends SQLiteOpenHelper{
 
     public Cursor getData(int id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from contacts where id="+id+"", null );
+        Cursor res =  db.rawQuery( "select * from donnees where id="+id+"", null );
         return res;
     }
 
@@ -65,14 +65,14 @@ public class DataBaseHandler extends SQLiteOpenHelper{
 
     public ArrayList<Long> getAllTimestamp()
     {
-        ArrayList<Long> array_list = new ArrayList<Long>();
+        ArrayList<Long> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from donnees", null );
         res.moveToFirst();
 
-        while(res.isAfterLast() == false){
-            array_list.add((long)(res.getColumnIndex(DONNEES_TIMESTAMP)));
+        while(!res.isAfterLast()){
+            array_list.add(res.getLong(res.getColumnIndex(DONNEES_TIMESTAMP)));
             res.moveToNext();
         }
         return array_list;
@@ -80,14 +80,14 @@ public class DataBaseHandler extends SQLiteOpenHelper{
 
     public ArrayList<Long> getAllTemps()
     {
-        ArrayList<Long> array_list = new ArrayList<Long>();
+        ArrayList<Long> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from donnees", null );
         res.moveToFirst();
 
-        while(res.isAfterLast() == false){
-            array_list.add((long)(res.getColumnIndex(DONNEES_TEMPS)));
+        while(!res.isAfterLast()){
+            array_list.add(res.getLong(res.getColumnIndex(DONNEES_TEMPS)));
             res.moveToNext();
         }
         return array_list;
@@ -95,16 +95,21 @@ public class DataBaseHandler extends SQLiteOpenHelper{
 
     public ArrayList<Double> getAllDistance()
     {
-        ArrayList<Double> array_list = new ArrayList<Double>();
+        ArrayList<Double> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from donnees", null );
         res.moveToFirst();
 
-        while(res.isAfterLast() == false){
-            array_list.add((double)(res.getColumnIndex(DONNEES_DISTANCE)));
+        while(!res.isAfterLast()){
+            array_list.add(res.getDouble(res.getColumnIndex(DONNEES_DISTANCE)));
             res.moveToNext();
         }
         return array_list;
+    }
+
+    public void deleteAllTable(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ DONNEES_TABLE_NAME);
     }
 }
