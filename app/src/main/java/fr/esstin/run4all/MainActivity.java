@@ -1,13 +1,46 @@
 package fr.esstin.run4all;
+    import android.app.Activity;
+    import android.content.Intent;
+    import android.os.Bundle;
+    import android.view.View;
+    import android.widget.Button;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
+    // On voudra détecter uniquement les clics sur ce bouton
+    Button but_start = null;
+    Button but_perf = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        but_start = (Button)findViewById(R.id.button_start);
+        but_perf = (Button)findViewById(R.id.button_perf);
+
+        /*but_start.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // Réagir à un long clic
+                return false;
+            }
+        });*/
+
+        but_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Réagir au clic
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        but_perf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PerfActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
