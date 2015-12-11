@@ -11,7 +11,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        tools:context="fr.esstin.android.run4all.MapsActivity" />
+        tools:context="fr.esstin.run4all.MapsActivity" />
 
     <Button
         android:layout_width="match_parent"

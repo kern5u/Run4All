@@ -25,7 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     //latitude1,longitude1
     double[] enregistrement_coordonnees = new double[2];
@@ -52,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locationListener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) throws SecurityException{
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
@@ -62,6 +62,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         pause = (Button) findViewById(R.id.pause);
         stop = (Button) findViewById(R.id.stop);
         chrono.start();
+
+        //Durée du rafraichissement (ms)/distance de rafr (m)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
 
@@ -154,7 +168,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
 
-        //Durée du rafraichissement (ms)/distance de rafr (m)
+
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -198,9 +212,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //=======Quand appuie sur le bouton return=============
     @Override
-    public void onPause() throws SecurityException{
+    public void onPause(){
         super.onPause();
         Log.i("onPause", "inside onPause");
+        //Durée du rafraichissement (ms)/distance de rafr (m)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         locationManager.removeUpdates(locationListener);
         locationManager = null;
     }
