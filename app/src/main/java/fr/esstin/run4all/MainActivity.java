@@ -3,20 +3,20 @@ package fr.esstin.run4all;
     import android.content.Intent;
     import android.os.Bundle;
     import android.view.View;
-    import android.widget.Button;
+    import android.widget.ImageButton;
 
 public class MainActivity extends Activity {
     // On voudra détecter uniquement les clics sur ce bouton
-    Button but_start = null;
-    Button but_perf = null;
+    ImageButton but_start = null;
+    ImageButton but_perf = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        but_start = (Button)findViewById(R.id.button_start);
-        but_perf = (Button)findViewById(R.id.button_perf);
+        but_start = (ImageButton)findViewById(R.id.button_start);
+        but_perf = (ImageButton)findViewById(R.id.button_perf);
 
         /*but_start.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

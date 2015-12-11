@@ -7,24 +7,53 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="fr.esstin.run4all.MainActivity">
+    tools:context="fr.esstin.android.run4all.MainActivity"
+    android:background="@drawable/course">
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton android:background="@drawable/capture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:text="Start"
         android:id="@+id/button_start"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="115dp" />
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="false"
+        android:layout_marginLeft="150dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="10dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton android:background="@drawable/perf"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:text="Performance"
         android:id="@+id/button_perf"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/button_start"
+        android:layout_alignLeft="@+id/button_start"
+        android:layout_alignStart="@+id/button_start"
+        android:layout_marginTop="41dp" />
+
+    <ImageView android:background="@drawable/run4all"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="250dp"
+        android:layout_marginStart="150dp"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="20dp" />
+
+
+
+
+
+
 
 </RelativeLayout>
