@@ -24,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
 import static android.location.Location.distanceBetween;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -36,9 +37,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double longitude = 0;
     double latitude = 0;
 
-    long basePause = 0;
-    long temps = 0;
-    long ts_debutRun = System.currentTimeMillis() / 1000;
+    long basePause = 0; //Pour la gestion de la pause du chrono
+    long temps = 0; //Temps de course
+    long timestamp = 0; //Timestamp du debut du run pour ordonner le graphe
 
     boolean first_passage = true;
     boolean bool_pause = false;
@@ -55,10 +56,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        timestamp = System.currentTimeMillis()/1000;
 
         bdd = new DataBaseHandler(this);
 
-        chrono = (Chronometer) findViewById(R.id.chronometer2);
+        chrono = (Chronometer) findViewById(R.id.chronometer);
         pause = (Button) findViewById(R.id.pause);
         stop = (Button) findViewById(R.id.stop);
         chrono.start();
@@ -71,7 +73,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            Log.d("Debogage","Entré dans permission");
             return;
         }
 
@@ -145,10 +146,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("Ici", "==============CLICK!!============");
                 bool_pause = !bool_pause;
                 if (bool_pause) {
+                    //Sauvegarde de la valeur du chrono
                     basePause = chrono.getBase() - SystemClock.elapsedRealtime();
                     chrono.stop();
 
                 } else {
+                    //Recalibrage la base du chrono pour qu'il continu là où il s'est arreté
                     chrono.setBase(SystemClock.elapsedRealtime() + basePause);
                     chrono.start();
                 }
@@ -160,8 +163,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onClick(View v) {
-                temps = chrono.getBase();
-                bdd.insertRunData(ts_debutRun, temps, distance);
+                temps = (SystemClock.elapsedRealtime() - chrono.getBase())/1000;//Recupération du temps de course
+                Log.d("Debogage", "Timestam fin = " + timestamp);
+                Log.d("Debogage", "Temps fin = " + temps);
+                Log.d("Debogage", "Distance fin = " + distance);
+                bdd.insertRunData(timestamp, temps, distance);//Envoie des données à la BDD
+                onPause();//Arret de la location
                 Intent intent = new Intent(MapsActivity.this, PerfActivity.class);
                 startActivity(intent);
             }
@@ -210,11 +217,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(position_initiale));
     }
 
-    //=======Quand appuie sur le bouton return=============
+    //=======Quand on quitte cette activité=============
     @Override
     public void onPause(){
         super.onPause();
         Log.i("onPause", "inside onPause");
+        chrono.stop();
         //Durée du rafraichissement (ms)/distance de rafr (m)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -227,6 +235,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.removeUpdates(locationListener);
-        locationManager = null;
     }
 }
