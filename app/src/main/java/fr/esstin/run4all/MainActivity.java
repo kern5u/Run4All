@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
         but_perf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PerfActivity.class);
+                Intent intent = new Intent(MainActivity.this, TestChart.class);
                 startActivity(intent);
             }
         });

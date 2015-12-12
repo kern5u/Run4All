@@ -15,7 +15,7 @@ public class PerfActivity extends Activity {
     DataBaseHandler bdd;
     ArrayList<Long> timestamp;
     ArrayList<Long> temps;
-    ArrayList<Double> distance;
+    ArrayList<Float> distance;
 
 
     @Override

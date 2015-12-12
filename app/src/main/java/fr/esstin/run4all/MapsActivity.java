@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,7 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double[] enregistrement_coordonnees = new double[2];
     float[] result = new float[1];
 
-    double distance = 0;
+    float distance = 0;
     double longitude = 0;
     double latitude = 0;
 
@@ -45,25 +47,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean bool_pause = false;
 
     Chronometer chrono;
-    Button pause = null;
-    Button stop = null;
+    ImageButton pause = null;
+    ImageButton stop = null;
     GoogleMap mMap;
     DataBaseHandler bdd;
     LocationManager locationManager;
     LocationListener locationListener;
 
+    //=====DEBUGAGE DISTANCE=========
+    TextView txtDistance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         timestamp = System.currentTimeMillis()/1000;
 
         bdd = new DataBaseHandler(this);
 
         chrono = (Chronometer) findViewById(R.id.chronometer);
-        pause = (Button) findViewById(R.id.pause);
-        stop = (Button) findViewById(R.id.stop);
+        pause = (ImageButton) findViewById(R.id.pause);
+        stop = (ImageButton) findViewById(R.id.stop);
         chrono.start();
+
+
+        //=====DEBUGAGE DISTANCE=========
+        txtDistance = (TextView)findViewById(R.id.textView);
+        txtDistance.setText("No Location Update");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -119,9 +130,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         first_passage = false;
                     } else {
                         distanceBetween(enregistrement_coordonnees[0], enregistrement_coordonnees[1], latitude, longitude, result);
+                        txtDistance.setText("Distance parcourue : "+String.valueOf(distance));
                         enregistrement_coordonnees[0] = latitude;
                         enregistrement_coordonnees[1] = longitude;
-                        distance += (double) result[0];
+                        distance += result[0];
                         Log.d("Distance", "Distance = " + distance);
                     }
                 } else {
@@ -176,7 +188,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20000, 15, locationListener);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

@@ -49,10 +49,18 @@
     <Chronometer
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/chronometer2"
+        android:id="@+id/chronometer"
         android:layout_alignTop="@+id/Stop"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp"/>
+        android:layout_marginTop="37dp"/> />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Distance"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal" />
 
 
 

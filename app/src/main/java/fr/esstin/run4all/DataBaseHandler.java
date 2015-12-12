@@ -41,7 +41,7 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public boolean insertRunData(long ts, long tps, double ds){
+    public boolean insertRunData(long ts, long tps, float ds){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("timestamp", ts);
@@ -93,16 +93,16 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         return array_list;
     }
 
-    public ArrayList<Double> getAllDistance()
+    public ArrayList<Float> getAllDistance()
     {
-        ArrayList<Double> array_list = new ArrayList<>();
+        ArrayList<Float> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from donnees", null );
         res.moveToFirst();
 
         while(!res.isAfterLast()){
-            array_list.add(res.getDouble(res.getColumnIndex(DONNEES_DISTANCE)));
+            array_list.add(res.getFloat(res.getColumnIndex(DONNEES_DISTANCE)));
             res.moveToNext();
         }
         return array_list;
