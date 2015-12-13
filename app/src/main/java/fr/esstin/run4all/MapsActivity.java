@@ -47,8 +47,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean bool_pause = false;
 
     Chronometer chrono;
-    ImageButton pause = null;
-    ImageButton stop = null;
+    Button pause = null;
+    Button stop = null;
     GoogleMap mMap;
     DataBaseHandler bdd;
     LocationManager locationManager;
@@ -67,10 +67,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bdd = new DataBaseHandler(this);
 
         chrono = (Chronometer) findViewById(R.id.chronometer);
-        pause = (ImageButton) findViewById(R.id.pause);
-        stop = (ImageButton) findViewById(R.id.stop);
+        pause = (Button) findViewById(R.id.pause);
+        stop = (Button) findViewById(R.id.stop);
         chrono.start();
 
+        pause.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Log.d("Debog", "==============CLICK!!============");
+                bool_pause = !bool_pause;
+                if (bool_pause) {
+                    //Sauvegarde de la valeur du chrono
+                    basePause = chrono.getBase() - SystemClock.elapsedRealtime();
+                    chrono.stop();
+
+                } else {
+                    //Recalibrage la base du chrono pour qu'il continu là où il s'est arreté
+                    chrono.setBase(SystemClock.elapsedRealtime() + basePause);
+                    chrono.start();
+                }
+            }
+
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                temps = (SystemClock.elapsedRealtime() - chrono.getBase()) / 1000;//Recupération du temps de course
+                Log.d("Debogage", "Timestam fin = " + timestamp);
+                Log.d("Debogage", "Temps fin = " + temps);
+                Log.d("Debogage", "Distance fin = " + distance);
+                bdd.insertRunData(timestamp, temps, distance);//Envoie des données à la BDD
+                onPause();//Arret de la location
+                Intent intent = new Intent(MapsActivity.this, PerfActivity.class);
+                startActivity(intent);
+            }
+
+        });
 
         //=====DEBUGAGE DISTANCE=========
         txtDistance = (TextView)findViewById(R.id.textView);
@@ -89,6 +124,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        //Definition des critères de selection du fournisseur de position
+        Criteria critere = new Criteria();
+        critere.setAccuracy(Criteria.ACCURACY_FINE);
+        critere.setCostAllowed(false);
+        critere.setPowerRequirement(Criteria.POWER_HIGH);
+        critere.setSpeedRequired(true);
+        String provider = locationManager.getBestProvider(critere, false); //True = resultat ne peux que correspondre aux critères
         locationListener = new LocationListener() {
 
             @Override
@@ -141,52 +183,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         };
-
-        //Definition des critères de selection du fournisseur de position
-        Criteria critere = new Criteria();
-        critere.setAccuracy(Criteria.ACCURACY_FINE);
-        critere.setCostAllowed(false);
-        critere.setPowerRequirement(Criteria.POWER_HIGH);
-        critere.setSpeedRequired(true);
-
-        String provider = locationManager.getBestProvider(critere, false); //True = resultat ne peux que correspondre aux critères
-
-        pause.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Log.d("Ici", "==============CLICK!!============");
-                bool_pause = !bool_pause;
-                if (bool_pause) {
-                    //Sauvegarde de la valeur du chrono
-                    basePause = chrono.getBase() - SystemClock.elapsedRealtime();
-                    chrono.stop();
-
-                } else {
-                    //Recalibrage la base du chrono pour qu'il continu là où il s'est arreté
-                    chrono.setBase(SystemClock.elapsedRealtime() + basePause);
-                    chrono.start();
-                }
-            }
-
-        });
-
-        stop.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                temps = (SystemClock.elapsedRealtime() - chrono.getBase())/1000;//Recupération du temps de course
-                Log.d("Debogage", "Timestam fin = " + timestamp);
-                Log.d("Debogage", "Temps fin = " + temps);
-                Log.d("Debogage", "Distance fin = " + distance);
-                bdd.insertRunData(timestamp, temps, distance);//Envoie des données à la BDD
-                onPause();//Arret de la location
-                Intent intent = new Intent(MapsActivity.this, PerfActivity.class);
-                startActivity(intent);
-            }
-
-        });
-
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20000, 15, locationListener);
 
