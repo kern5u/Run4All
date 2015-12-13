@@ -47,8 +47,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean bool_pause = false;
 
     Chronometer chrono;
-    Button pause = null;
-    Button stop = null;
+    ImageButton pause = null;
+    ImageButton stop = null;
     GoogleMap mMap;
     DataBaseHandler bdd;
     LocationManager locationManager;
@@ -67,8 +67,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bdd = new DataBaseHandler(this);
 
         chrono = (Chronometer) findViewById(R.id.chronometer);
-        pause = (Button) findViewById(R.id.pause);
-        stop = (Button) findViewById(R.id.stop);
+        pause = (ImageButton) findViewById(R.id.pause);
+        stop = (ImageButton) findViewById(R.id.stop);
+        txtDistance = (TextView)findViewById(R.id.textViewDistance);
+        txtDistance.setText("No Location Update");
         chrono.start();
 
         pause.setOnClickListener(new View.OnClickListener() {
@@ -107,9 +109,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
 
-        //=====DEBUGAGE DISTANCE=========
-        txtDistance = (TextView)findViewById(R.id.textView);
-        txtDistance.setText("No Location Update");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -150,7 +149,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onLocationChanged(Location location) {
-                Log.d("Ici", "==============PASSE!!============");
                 if (!bool_pause) {
                     /*====Definition de la position====*/
                     longitude = location.getLongitude();
