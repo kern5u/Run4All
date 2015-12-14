@@ -10,3 +10,4 @@ A faire :
 - Getion de la mise en veille => Pour le moment arrêt de l'appli 
 
 - Pour les layouts, préferer les matchparent/wrapcontent
+-
