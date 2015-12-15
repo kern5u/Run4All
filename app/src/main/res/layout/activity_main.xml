@@ -8,7 +8,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="fr.esstin.run4all.MainActivity"
-    android:background="@drawable/course">
+    android:background="@drawable/course"
+    android:orientation="vertical">
 
 
     <ImageButton android:background="@drawable/capture"
@@ -22,7 +23,8 @@
         android:layout_alignParentLeft="false"
         android:layout_marginLeft="150dp"
         android:layout_marginRight="0dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:layout_gravity="left"/>
 
     <ImageButton android:background="@drawable/perf"
         android:layout_width="150dp"
@@ -32,7 +34,8 @@
         android:layout_below="@+id/button_start"
         android:layout_alignLeft="@+id/button_start"
         android:layout_alignStart="@+id/button_start"
-        android:layout_marginTop="41dp" />
+        android:layout_marginTop="41dp"
+        android:layout_gravity="left"/>
 
     <ImageView android:background="@drawable/run4all"
         android:layout_width="250dp"
@@ -48,6 +51,7 @@
         android:layout_alignParentBottom="false"
         android:layout_alignWithParentIfMissing="false"
         android:layout_marginTop="0dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"
+        android:layout_gravity="left"/>
 
 </RelativeLayout>
