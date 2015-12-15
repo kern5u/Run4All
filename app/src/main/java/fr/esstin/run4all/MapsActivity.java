@@ -181,31 +181,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20000, 15, locationListener);
     }
 
-    /*@Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the user's current game state
-        savedInstanceState.putDouble("latitude", latitude);
-        savedInstanceState.putDouble("longitude", longitude);
-        Log.d("Debug/map", "latitude on save : " + latitude);
-        Log.d("Debug/map", "longitude on save : " + longitude);
-
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        // Always call the superclass so it can restore the view hierarchy
-        super.onRestoreInstanceState(savedInstanceState);
-
-        // Restore state members from saved instance
-        latitude = savedInstanceState.getDouble("latitude");
-        longitude = savedInstanceState.getDouble("longitude");
-        Log.d("Debug/map","latitude on restore : "+latitude);
-        Log.d("Debug/map","longitude on restore : "+longitude);
-    }
-    */
-
     //=======Quand on quitte cette activité=============
+    //Arrêt du chrono et du LocationUpdate
     @Override
     public void onPause(){
         super.onPause();
@@ -223,6 +200,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         locationManager.removeUpdates(locationListener);
     }
+
+    /*@Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save the user's current game state
+        savedInstanceState.putDouble("latitude", latitude);
+        savedInstanceState.putDouble("longitude", longitude);
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        latitude = savedInstanceState.getDouble("latitude");
+        longitude = savedInstanceState.getDouble("longitude");
+    }*/
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
