@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -77,18 +76,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onClick(View v) {
-                Log.d("Debog", "==============CLICK!!============");
                 bool_pause = !bool_pause;
-                if (bool_pause) {
-                    //Sauvegarde de la valeur du chrono
-                    basePause = chrono.getBase() - SystemClock.elapsedRealtime();
-                    chrono.stop();
-
-                } else {
-                    //Recalibrage la base du chrono pour qu'il continu là où il s'est arreté
-                    chrono.setBase(SystemClock.elapsedRealtime() + basePause);
-                    chrono.start();
-                }
+                basePause = gestionPauseChrono(bool_pause,chrono,basePause);
             }
 
         });
@@ -108,19 +97,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         });
-
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //Definition des critères de selection du fournisseur de position
@@ -182,14 +158,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20000, 15, locationListener);
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
+    //==========Quand l'activité reviens active, après un onPause===========
+    public void onResume(){
+        super.onResume();
+        basePause = gestionPauseChrono(false,chrono,basePause);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 20000, 15, locationListener);
+    }
 
     /*@Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -215,20 +205,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     */
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        // Add a marker in Sydney and move the camera
-        //mMap.addMarker(new MarkerOptions().position(position_initiale).title("Ma position"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(position_initiale));
-    }
-
     //=======Quand on quitte cette activité=============
     @Override
     public void onPause(){
         super.onPause();
-        Log.i("onPause", "inside onPause");
-        chrono.stop();
+        basePause = gestionPauseChrono(true,chrono,basePause);
         //Durée du rafraichissement (ms)/distance de rafr (m)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -241,5 +222,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.removeUpdates(locationListener);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        // Add a marker in Sydney and move the camera
+        //mMap.addMarker(new MarkerOptions().position(position_initiale).title("Ma position"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(position_initiale));
+    }
+
+    public long gestionPauseChrono(boolean bool, Chronometer chrononometre, long base){
+        if (bool) {
+            //Sauvegarde de la valeur du chrono
+            base = chrononometre.getBase() - SystemClock.elapsedRealtime();
+            chrononometre.stop();
+
+        } else {
+            //Recalibrage la base du chrono pour qu'il continu là où il s'est arreté
+            chrononometre.setBase(SystemClock.elapsedRealtime() + base);
+            chrononometre.start();
+        }
+        return base;
     }
 }
