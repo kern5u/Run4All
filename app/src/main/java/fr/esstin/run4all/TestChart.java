@@ -5,6 +5,7 @@ package fr.esstin.run4all;
     import android.support.v4.content.ContextCompat;
 
     import com.github.mikephil.charting.charts.LineChart;
+    import com.github.mikephil.charting.components.Legend;
     import com.github.mikephil.charting.components.XAxis;
     import com.github.mikephil.charting.components.YAxis;
     import com.github.mikephil.charting.data.Entry;
@@ -91,6 +92,10 @@ public class TestChart extends Activity {
         leftAxis.setStartAtZero(false);
         chart.setTouchEnabled(true);
         chart.setVisibleXRangeMaximum(4.0f);
+
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
+        chart.setDescription("");
         chart.invalidate(); // refresh
 
 
