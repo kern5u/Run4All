@@ -14,30 +14,17 @@
 
 
     <ImageView android:background="@drawable/run4all"
-        android:layout_width="190dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="120dp"
         android:layout_alignParentRight="false"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="false"
         android:layout_alignWithParentIfMissing="false"
-        android:layout_marginTop="0dp"
-        android:layout_gravity="top" />
-
-    <ImageButton android:background="@drawable/perf"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:text="Performance"
-        android:id="@+id/button_perf"
-        android:layout_below="@+id/button_start"
-        android:layout_alignLeft="@+id/button_start"
-        android:layout_alignStart="@+id/button_start"
-        android:layout_marginTop="40dp"
-        android:layout_gravity="center_vertical|right" />
+        android:layout_gravity="top|right" />
 
     <ImageButton android:background="@drawable/capture"
         android:layout_width="120dp"
@@ -52,5 +39,16 @@
         android:layout_marginRight="0dp"
         android:layout_marginTop="25dp"
         android:layout_gravity="center_vertical|right"/>
+
+    <ImageButton android:background="@drawable/perf"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:text="Performance"
+        android:id="@+id/button_perf"
+        android:layout_below="@+id/button_start"
+        android:layout_alignLeft="@+id/button_start"
+        android:layout_alignStart="@+id/button_start"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="right" />
 
 </LinearLayout>
