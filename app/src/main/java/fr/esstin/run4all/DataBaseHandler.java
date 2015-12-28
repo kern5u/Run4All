@@ -18,10 +18,10 @@ public class DataBaseHandler extends SQLiteOpenHelper{
     public static final String DONNEES_TIMESTAMP = "timestamp";
     public static final String DONNEES_TEMPS = "temps";
     public static final String DONNEES_DISTANCE = "distance";
+    public static final String DONNEES_VITESSE = "vitesse";
 
 
-    public DataBaseHandler(Context context)
-    {
+    public DataBaseHandler(Context context){
         super(context, DATABASE_NAME, null, 1);
     }
 
@@ -30,7 +30,7 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table donnees " +
-                        "(id integer primary key, timestamp real, temps real, distance real) "
+                        "(id integer primary key, timestamp real, temps real, distance real, vitesse real) "
         );
     }
 
@@ -41,12 +41,13 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public boolean insertRunData(long ts, long tps, float ds){
+    public boolean insertRunData(long ts, long tps, float ds, float vm){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("timestamp", ts);
         contentValues.put("temps", tps);
         contentValues.put("distance", ds);
+        contentValues.put("vitesse", vm);
         db.insert("donnees", null, contentValues);
         return true;
     }
@@ -73,6 +74,21 @@ public class DataBaseHandler extends SQLiteOpenHelper{
 
         while(!res.isAfterLast()){
             array_list.add(res.getLong(res.getColumnIndex(DONNEES_TIMESTAMP)));
+            res.moveToNext();
+        }
+        return array_list;
+    }
+
+    public ArrayList<Float> getAllvitesse()
+    {
+        ArrayList<Float> array_list = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from donnees", null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            array_list.add(res.getFloat(res.getColumnIndex(DONNEES_VITESSE)));
             res.moveToNext();
         }
         return array_list;

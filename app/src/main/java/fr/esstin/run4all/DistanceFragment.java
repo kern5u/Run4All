@@ -1,10 +1,11 @@
 package fr.esstin.run4all;
 
-
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -18,44 +19,27 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class PerfActivity extends Activity {
+public class DistanceFragment extends Fragment {
 
     DataBaseHandler bdd;
     ArrayList<Long> timestamp;
-    ArrayList<Long> temps;
     ArrayList<Float> distance;
     double listSize = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        bdd= new DataBaseHandler(this);
+        // Inflate the layout for this fragment
+        View V = inflater.inflate(R.layout.fragment_distance, container, false);
 
-        setContentView(R.layout.activity_perf);
-
-        //Méthode pour supprimer les entrées
-        //bdd.deleteAllTable();
+        bdd= new DataBaseHandler(getActivity());
 
         timestamp = bdd.getAllTimestamp();
-        temps = bdd.getAllTemps();
         distance = bdd.getAllDistance();
         listSize = timestamp.size();
 
-        //===========AFFICHAGE DES DONNEES DE LA BASE=================
-        for(int i=0; i<listSize;i++){
-            Log.d("Debogage","Timestamp["+i+"] = "+timestamp.get(i));
-        }
-
-        for(int i=0; i<listSize;i++){
-            Log.d("Debogage","Temps["+i+"] = "+temps.get(i));
-        }
-
-        for(int i=0; i<listSize;i++){
-            Log.d("Debogage","Distance["+i+"] = "+distance.get(i));
-        }
-
-        LineChart chart = (LineChart) findViewById(R.id.chart);
+        LineChart chart = (LineChart)V.findViewById(R.id.chartDistance);
 
         //Liste des Entry contenant les distances parcourues
         ArrayList<Entry> distanceData = new ArrayList<>();
@@ -70,7 +54,7 @@ public class PerfActivity extends Activity {
 
         LineDataSet setComp1 = new LineDataSet(distanceData, "distance");
         setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        setComp1.setColor(ContextCompat.getColor(getApplicationContext(), R.color.rouge));
+        setComp1.setColor(ContextCompat.getColor(getContext(), R.color.rouge));
 
         ArrayList<LineDataSet> dataSets = new ArrayList<>();
         dataSets.add(setComp1);
@@ -94,7 +78,7 @@ public class PerfActivity extends Activity {
         chart.setDescription("");
         chart.invalidate(); // refresh
 
-
+        return V;
     }
 
     private String calculDateTimestamp(Long aLong) {

@@ -34,6 +34,7 @@
                 android:value="fr.esstin.run4all.MainActivity" />
         </activity>
         <activity android:name=".TestChart" />
+        <activity android:name=".PerfFragment" />
     </application>
 
 </manifest>
