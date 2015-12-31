@@ -18,13 +18,13 @@ public class PerfFragment extends FragmentActivity {
         mTabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
-        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("Distance"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("Dist"),
                 DistanceFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Temps"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Tps"),
                 TempsFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("tab3").setIndicator("Vitesse moyenne"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab3").setIndicator("Vit"),
                 VitMoyFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("tab4").setIndicator("Suppression de données"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab4").setIndicator("Suppr"),
                 DeleteEntryFragment.class, null);
     }
 }

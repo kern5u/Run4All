@@ -48,11 +48,11 @@ public class DistanceFragment extends Fragment {
         ArrayList<String> xVals = new ArrayList<>();
         for (int i=0; i<listSize; i++){
             distanceData.add(new Entry(distance.get(i),i)); //ordronnées
-            String dateTimestamp = calculDateTimestamp(timestamp.get(i)); //abscisse
+            String dateTimestamp = bdd.calculDateTimestamp(timestamp.get(i)); //abscisse
             xVals.add(dateTimestamp);
         }
 
-        LineDataSet setComp1 = new LineDataSet(distanceData, "distance");
+        LineDataSet setComp1 = new LineDataSet(distanceData, "Distance");
         setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
         setComp1.setColor(ContextCompat.getColor(getContext(), R.color.rouge));
 
@@ -80,56 +80,4 @@ public class DistanceFragment extends Fragment {
 
         return V;
     }
-
-    private String calculDateTimestamp(Long aLong) {
-        String mois = new String();
-        Date date = new Date(aLong);
-        Calendar c = Calendar.getInstance();
-        c.setTime(date);
-        int annee = c.get(Calendar.YEAR);
-        annee = annee - (int)Math.floor(annee/100)*100;
-        switch(c.get(Calendar.MONTH)){
-            case 0:
-                mois = "Jan";
-                break;
-            case 1:
-                mois = "Fev";
-                break;
-            case 2:
-                mois = "Mar";
-                break;
-            case 3:
-                mois = "Avr";
-                break;
-            case 4:
-                mois = "Mai";
-                break;
-            case 5:
-                mois = "Juin";
-                break;
-            case 6:
-                mois = "Juil";
-                break;
-            case 7:
-                mois = "Aou";
-                break;
-            case 8:
-                mois = "Sep";
-                break;
-            case 9:
-                mois = "Oct";
-                break;
-            case 10:
-                mois = "Nov";
-                break;
-            case 11:
-                mois = "Dec";
-                break;
-            default:
-                mois = "00";
-        }
-
-        return String.valueOf(c.get(Calendar.DATE))+mois+String.valueOf(annee);
-    }
-
 }

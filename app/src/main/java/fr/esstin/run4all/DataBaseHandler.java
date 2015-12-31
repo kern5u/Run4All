@@ -7,8 +7,12 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class DataBaseHandler extends SQLiteOpenHelper{
 
@@ -48,7 +52,7 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         contentValues.put("temps", tps);
         contentValues.put("distance", ds);
         contentValues.put("vitesse", vm);
-        db.insert("donnees", null, contentValues);
+        db.insert(DONNEES_TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -79,12 +83,38 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         return array_list;
     }
 
+    /*Retourne la date sous forme de string*/
+    public List<String> getAllDate()
+    {
+        List<String> array_list = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery("select * from donnees", null);
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            array_list.add(String.valueOf(res.getLong(res.getColumnIndex(DONNEES_KEY)))+" - "+calculDateTimestamp(res.getLong(res.getColumnIndex(DONNEES_TIMESTAMP))));
+            res.moveToNext();
+        }
+        return array_list;
+    }
+
+    public String calculDateTimestamp(Long aLong) {
+        Date date = new Date(aLong);
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int annee = c.get(Calendar.YEAR);
+        annee = annee - (int)Math.floor(annee/100)*100;
+        return String.valueOf(c.get(Calendar.DATE))+"/"+String.valueOf(c.get(Calendar.MONTH)+1)+"/"+String.valueOf(annee);
+    }
+
+
     public ArrayList<Float> getAllvitesse()
     {
         ArrayList<Float> array_list = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from donnees", null );
+        Cursor res =  db.rawQuery("select * from donnees", null);
         res.moveToFirst();
 
         while(!res.isAfterLast()){
@@ -126,6 +156,14 @@ public class DataBaseHandler extends SQLiteOpenHelper{
 
     public void deleteAllTable(){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from "+ DONNEES_TABLE_NAME);
+        db.execSQL("delete from " + DONNEES_TABLE_NAME);
+    }
+
+    public void deleteRun(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        //Pour parser la chaine de charactères
+        String str[] = date.split("\\s");
+        Log.d("Debug", "str[0] = " + str[0]);
+        db.delete(DONNEES_TABLE_NAME, "id=?", new String[]{str[0]});
     }
 }
