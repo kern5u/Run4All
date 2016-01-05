@@ -93,31 +93,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 distance = 2000;
                 temps = 1800;
                 timestamp = 1451989363000l;
+                //==========================================
                 distance = (float)(Math.round(distance/100)/10);
                 bdd.insertRunData(timestamp, temps, distance, distance / (temps * 60));//Envoie des données à la BDD
-                //MISE EN PLACE DE LA BOITE DE DIALOGUE LORS DE LA SUPPRESSION DE LA BASE
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                        getApplicationContext());
 
-                // Titre de la boite de dialogue
-                alertDialogBuilder.setTitle("Course terminée !");
-
-                // Settings de la boite de dialogue
-                alertDialogBuilder
-                        .setMessage("Vous venez de parcourir " + distance + " en " +calculTempsString(temps))
-                        .setCancelable(false)
-                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-
-                // Création de la boite
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // Affichage de la boite
-                alertDialog.show();
                 Intent intent = new Intent(MapsActivity.this, PerfFragment.class);
                 startActivity(intent);
             }
