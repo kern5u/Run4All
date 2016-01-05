@@ -1,7 +1,9 @@
 package fr.esstin.run4all;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -87,11 +89,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 temps = (SystemClock.elapsedRealtime() - chrono.getBase()) / 1000;//Recupération du temps de course
-                Log.d("Debogage", "Timestam fin = " + timestamp);
-                Log.d("Debogage", "Temps fin = " + temps);
-                Log.d("Debogage", "Distance fin = " + distance);
-                Log.d("Debogage", "Vitesse fin = " + distance / (temps * 60));
+                //===============POUR DEBUG================
+                distance = 2000;
+                temps = 1800;
+                timestamp = 1451989363000l;
+                distance = (float)(Math.round(distance/100)/10);
                 bdd.insertRunData(timestamp, temps, distance, distance / (temps * 60));//Envoie des données à la BDD
+                //MISE EN PLACE DE LA BOITE DE DIALOGUE LORS DE LA SUPPRESSION DE LA BASE
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        getApplicationContext());
+
+                // Titre de la boite de dialogue
+                alertDialogBuilder.setTitle("Course terminée !");
+
+                // Settings de la boite de dialogue
+                alertDialogBuilder
+                        .setMessage("Vous venez de parcourir " + distance + " en " +calculTempsString(temps))
+                        .setCancelable(false)
+                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+
+                // Création de la boite
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // Affichage de la boite
+                alertDialog.show();
                 Intent intent = new Intent(MapsActivity.this, PerfFragment.class);
                 startActivity(intent);
             }
@@ -240,5 +266,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             chrononometre.start();
         }
         return base;
+    }
+
+    public String calculTempsString(long temps){
+        double heure = Math.floor(temps/3600);
+        double minutes = Math.floor((temps%3600)/60);
+        double secondes = temps%60;
+
+        if(heure == 0 && minutes == 0){
+            return String.valueOf(secondes)+" sec";
+        }
+
+        else if (heure == 0){
+            return String.valueOf(minutes)+" min "+String.valueOf(secondes)+" sec";
+        }
+
+        else{
+            return String.valueOf(heure)+" h "+String.valueOf(minutes)+" min "+String.valueOf(secondes)+" sec";
+        }
     }
 }
