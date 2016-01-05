@@ -16,7 +16,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Supprimer un élément"
+        android:text="Supprimer le run"
         android:id="@+id/suppr_one"
         android:layout_gravity="center_horizontal" />
 

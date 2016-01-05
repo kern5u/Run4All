@@ -24,7 +24,7 @@ public class PerfFragment extends FragmentActivity {
                 TempsFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("tab3").setIndicator("Vit"),
                 VitMoyFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("tab4").setIndicator("Suppr"),
+        mTabHost.addTab(mTabHost.newTabSpec("tab4").setIndicator("Sup"),
                 DeleteEntryFragment.class, null);
     }
 }

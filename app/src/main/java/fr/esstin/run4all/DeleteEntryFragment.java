@@ -1,5 +1,7 @@
 package fr.esstin.run4all;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -51,36 +53,63 @@ public class DeleteEntryFragment extends Fragment  implements OnItemSelectedList
         suppr_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bdd.deleteAllTable();
-                loadSpinnerData();
+
+                //MISE EN PLACE DE LA BOITE DE DIALOGUE LORS DE LA SUPPRESSION DE LA BASE
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        getActivity());
+
+                // Titre de la boite de dialogue
+                alertDialogBuilder.setTitle("Confirmation");
+
+                // Settings de la boite de dialogue
+                alertDialogBuilder
+                        .setMessage("Etes-vous sûr de vouloir effacer toutes vos données ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Réponse OUI
+                                //==> Suppression des entrées
+                                bdd.deleteAllTable();
+                                loadSpinnerData();
+                            }
+                        })
+                        .setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Réponse NON
+                                //==> Fermeture de la boite de dialogue
+                                dialog.cancel();
+                            }
+                        });
+
+                // Création de la boite
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // Affichage de la boite
+                alertDialog.show();
             }
         });
-
         return V;
     }
 
     private void loadSpinnerData() {
-        // database handler
-        DataBaseHandler db = new DataBaseHandler(getActivity());
 
-        // Spinner Drop down elements
-        List<String> date = db.getAllDate();
+        DataBaseHandler bdd = new DataBaseHandler(getActivity());
+        List<String> date = bdd.getAllDate();
 
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, date);
 
-        // Drop down layout style - list view with radio button
+        // Drop down layout style
         dataAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
+        // Prise en compte de l'item sélectionné
         date_coisie = parent.getItemAtPosition(position).toString();
         Log.d("Debug", "Label choisi : "+date_coisie);
     }
