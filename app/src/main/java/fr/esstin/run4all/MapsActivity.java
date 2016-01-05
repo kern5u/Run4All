@@ -92,7 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d("Debogage", "Distance fin = " + distance);
                 Log.d("Debogage", "Vitesse fin = " + distance / (temps * 60));
                 bdd.insertRunData(timestamp, temps, distance, distance / (temps * 60));//Envoie des données à la BDD
-                Intent intent = new Intent(MapsActivity.this, PerfActivity.class);
+                Intent intent = new Intent(MapsActivity.this, PerfFragment.class);
                 startActivity(intent);
             }
 
