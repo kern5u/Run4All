@@ -230,11 +230,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (bool) {
             //Sauvegarde de la valeur du chrono
             base = chrononometre.getBase() - SystemClock.elapsedRealtime();
+            pause.setImageResource(R.drawable.image_play);
             chrononometre.stop();
 
         } else {
             //Recalibrage la base du chrono pour qu'il continu là où il s'est arreté
             chrononometre.setBase(SystemClock.elapsedRealtime() + base);
+            pause.setImageResource(R.drawable.image_pause);
             chrononometre.start();
         }
         return base;
