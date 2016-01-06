@@ -1,10 +1,7 @@
 package fr.esstin.run4all;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -14,8 +11,10 @@ import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -55,13 +54,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
     LocationListener locationListener;
 
-    //=====DEBUGAGE DISTANCE=========
     TextView txtDistance;
+
+    FragmentManager fm = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //====TEST POUR LA GESTION DU LOCK DU TEL===========
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON|
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED|
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        //===================================================
 
         timestamp = System.currentTimeMillis()/1000;
 
@@ -93,12 +100,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 distance = 2000;
                 temps = 1800;
                 timestamp = 1451989363000l;
-                //==========================================
+                //===========================================
                 distance = (float)(Math.round(distance/100)/10);
                 bdd.insertRunData(timestamp, temps, distance, distance / (temps * 60));//Envoie des données à la BDD
 
-                Intent intent = new Intent(MapsActivity.this, PerfFragment.class);
-                startActivity(intent);
+                //Affichage de la boite de dialog
+                AlertDFragment alertdFragment = new AlertDFragment();
+                alertdFragment.show(fm,"Run Terminé");
             }
 
         });
@@ -235,7 +243,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (bool) {
             //Sauvegarde de la valeur du chrono
             base = chrononometre.getBase() - SystemClock.elapsedRealtime();
-           pause.setBackgroundResource(R.drawable.image_play);
+            pause.setBackgroundResource(R.drawable.image_play);
             chrononometre.stop();
 
         } else {
