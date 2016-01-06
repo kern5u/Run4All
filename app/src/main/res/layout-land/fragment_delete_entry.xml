@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".DeviceFragment"
-    android:background="@drawable/course4"
-    android:id="@+id/">
+    android:background="@drawable/course4">
 
 
     <Spinner
