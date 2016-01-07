@@ -35,12 +35,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double[] enregistrement_coordonnees = new double[2];
     float[] result = new float[1];
 
-    float distance = 0;
+    static float distance = 0;
     double longitude = 0;
     double latitude = 0;
 
     long basePause = 0; //Pour la gestion de la pause du chrono
-    long temps = 0; //Temps de course
+    static long temps = 0; //Temps de course
     long timestamp = 0; //Timestamp du debut du run pour ordonner le graphe
 
     boolean first_passage = true;
@@ -59,7 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FragmentManager fm = getSupportFragmentManager();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
@@ -255,7 +255,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return base;
     }
 
-    public String calculTempsString(long temps){
+    public static String calculTempsString(long temps){
         double heure = Math.floor(temps/3600);
         double minutes = Math.floor((temps%3600)/60);
         double secondes = temps%60;
