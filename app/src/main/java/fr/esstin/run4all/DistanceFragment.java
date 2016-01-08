@@ -52,7 +52,7 @@ public class DistanceFragment extends Fragment {
             xVals.add(dateTimestamp);
         }
 
-        LineDataSet setComp1 = new LineDataSet(distanceData, "Distance");
+        LineDataSet setComp1 = new LineDataSet(distanceData, "Distance en KM");
         setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
         setComp1.setColor(ContextCompat.getColor(getContext(), R.color.rouge));
 
@@ -74,7 +74,7 @@ public class DistanceFragment extends Fragment {
         chart.setVisibleXRangeMaximum(4.0f);
 
         Legend legend = chart.getLegend();
-        legend.setEnabled(false);
+        legend.setEnabled(true);
         chart.setDescription("");
         chart.invalidate(); // refresh
 

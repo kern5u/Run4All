@@ -52,7 +52,7 @@ public class VitMoyFragment extends Fragment {
             xVals.add(dateTimestamp);
         }
 
-        LineDataSet setComp1 = new LineDataSet(vitesseData, "Vitesse");
+        LineDataSet setComp1 = new LineDataSet(vitesseData, "Vitesse en KM/h");
         setComp1.setAxisDependency(YAxis.AxisDependency.LEFT);
         setComp1.setColor(ContextCompat.getColor(getContext(), R.color.rouge));
 
@@ -74,7 +74,7 @@ public class VitMoyFragment extends Fragment {
         chart.setVisibleXRangeMaximum(4.0f);
 
         Legend legend = chart.getLegend();
-        legend.setEnabled(false);
+        legend.setEnabled(true);
         chart.setDescription("");
         chart.invalidate(); // refresh
 

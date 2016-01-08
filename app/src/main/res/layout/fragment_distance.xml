@@ -9,6 +9,7 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chartDistance"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+        android:layout_height="fill_parent"
+        />
 
 </LinearLayout>

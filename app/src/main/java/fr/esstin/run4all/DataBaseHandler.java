@@ -166,4 +166,6 @@ public class DataBaseHandler extends SQLiteOpenHelper{
         Log.d("Debug", "str[0] = " + str[0]);
         db.delete(DONNEES_TABLE_NAME, "id=?", new String[]{str[0]});
     }
+
+
 }

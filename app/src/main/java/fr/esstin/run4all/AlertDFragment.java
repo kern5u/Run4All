@@ -10,6 +10,7 @@ public class AlertDFragment extends DialogFragment{
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         return new AlertDialog.Builder(getActivity())
                 // Set Dialog Icon
                 .setIcon(R.drawable.image_play)
