@@ -113,6 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     onPause();
 
                     //stop.setBackgroundResource(R.drawable.image_quit);
+                    pause.setEnabled(false);
                 }
 
                 else{
