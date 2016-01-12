@@ -95,18 +95,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onClick(View v) {
-                temps = (SystemClock.elapsedRealtime() - chrono.getBase()) / 1000;//Recupération du temps de course
-                //===============POUR DEBUG================
-                distance = 2000;
-                temps = 1800;
-                timestamp = 1451989363000l;
-                //===========================================
-                distance = (float)(Math.round(distance/100)/10);
-                bdd.insertRunData(timestamp, temps, distance, distance / (temps * 60));//Envoie des données à la BDD
 
-                //Affichage de la boite de dialog
-                AlertDFragment alertdFragment = new AlertDFragment();
-                alertdFragment.show(fm,"Run Terminé");
+                if(!AlertDFragment.ok_pressed) {
+                    temps = (SystemClock.elapsedRealtime() - chrono.getBase()) / 1000;//Recupération du temps de course
+                    //===============POUR DEBUG================
+                    distance = 2000;
+                    temps = 1800;
+                    timestamp = 1451989363000l;
+                    //===========================================
+                    distance = (float) (Math.round(distance / 100) / 10);
+                    bdd.insertRunData(timestamp, temps, distance, distance / (temps * 60));//Envoie des données à la BDD
+
+                    //Affichage de la boite de dialog
+                    AlertDFragment alertdFragment = new AlertDFragment();
+                    alertdFragment.show(fm, "Run Terminé");
+
+                    onPause();
+
+                    //stop.setBackgroundResource(R.drawable.image_quit);
+                }
+
+                else{
+                    AlertDFragment.ok_pressed = false;
+                    finish();
+                }
+
             }
 
         });
@@ -255,21 +268,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return base;
     }
 
-    public static String calculTempsString(long temps){
-        double heure = Math.floor(temps/3600);
-        double minutes = Math.floor((temps%3600)/60);
-        double secondes = temps%60;
+    public static String calculTempsString(long temps) {
+        double heure = Math.floor(temps / 3600);
+        double minutes = Math.floor((temps % 3600) / 60);
+        double secondes = temps % 60;
 
-        if(heure == 0 && minutes == 0){
-            return String.valueOf(secondes)+" sec";
-        }
-
-        else if (heure == 0){
-            return String.valueOf(minutes)+" min "+String.valueOf(secondes)+" sec";
-        }
-
-        else{
-            return String.valueOf(heure)+" h "+String.valueOf(minutes)+" min "+String.valueOf(secondes)+" sec";
+        if (heure == 0 && minutes == 0) {
+            return String.valueOf(secondes) + " sec";
+        } else if (heure == 0) {
+            return String.valueOf(minutes) + " min " + String.valueOf(secondes) + " sec";
+        } else {
+            return String.valueOf(heure) + " h " + String.valueOf(minutes) + " min " + String.valueOf(secondes) + " sec";
         }
     }
 }
